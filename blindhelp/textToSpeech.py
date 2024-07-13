@@ -23,4 +23,3 @@ def text_to_speech(text, lang='en'):
     os.remove("output.mp3")
 
 
-# text_to_speech('Please say something into the microphone.')

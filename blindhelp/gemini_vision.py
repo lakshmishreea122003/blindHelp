@@ -1,8 +1,7 @@
 import cv2, time, os
 import google.generativeai as genai
-from textToSpeech import text_to_speech
 from speech import getQuery
-
+from textToSpeech import text_to_speech
 
 class IAnalysis:
     def __init__(self):
@@ -37,7 +36,7 @@ def get_description_from_gemini(image,query):
     description = analyzer.g_vision(image,query)
     return description
 
-def main(query):
+def main():
     # Open a connection to the webcam
     cap = cv2.VideoCapture(0)
 
@@ -66,7 +65,7 @@ def main(query):
 
             # Print the description to the terminal
             print(f"Frame {frame_count}: {description}")
-
+            text_to_speech(description)
             # Put the description text on the frame
             font = cv2.FONT_HERSHEY_SIMPLEX
             text = description
