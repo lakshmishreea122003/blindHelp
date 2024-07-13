@@ -14,6 +14,12 @@ from .main import start
 
 
 @method_decorator(csrf_exempt, name='dispatch')
+class Say(APIView):
+    permission_classes = [AllowAny]
+    def get(self, request):
+        return Response({'message': 'Hello, world!'}, status=status.HTTP_200_OK)
+
+@method_decorator(csrf_exempt, name='dispatch')
 class LoginView(APIView):
     permission_classes = [AllowAny]
     def post(self, request):

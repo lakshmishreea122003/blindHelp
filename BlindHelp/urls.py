@@ -19,5 +19,6 @@ from django.urls import path, include
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('BlindAssist/',include('BlindAssist.urls'))
+    path('BlindAssist/',include('BlindAssist.urls')),
+    path('',include('BlindAssist.urls'))
 ]
