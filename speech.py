@@ -1,7 +1,7 @@
 import speech_recognition as sr
 import pyttsx3
 from blindhelp.gemini_vision import main
-from blindhelp.textToSpeech import text_to_speech
+from blindhelp.conversion.textToSpeech import text_to_speech
 
 def run():
     recognizer = sr.Recognizer()

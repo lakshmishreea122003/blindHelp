@@ -2,7 +2,33 @@ import cv2
 import time
 import google.generativeai as genai
 import os
-from textToSpeech import text_to_speech
+from gtts import gTTS
+import pygame
+
+def text_to_speech(text, lang='en'):
+    tts = gTTS(text=text, lang=lang)
+    tts.save("output.mp3")
+    
+    # Optional delay before playing the audio
+    time.sleep(2)
+
+    # Initialize pygame mixer
+    pygame.mixer.init()
+    pygame.mixer.music.load("output.mp3")
+    pygame.mixer.music.play()
+
+    # Wait until the audio finishes playing
+    while pygame.mixer.music.get_busy():
+        time.sleep(1)  # Sleep for a while to avoid busy-waiting
+
+    # Uninitialize the mixer to release the file
+    pygame.mixer.quit()
+
+    # Clean up the audio file
+    os.remove("output.mp3")
+
+
+
 class IAnalysis:
     def __init__(self):
         GOOGLE_API_KEY = os.environ.get('GOOGLE_API_KEY')
@@ -34,7 +60,7 @@ def get_description_from_gemini(image,query):
     description = analyzer.g_vision(image,query)
     return description
 
-def main():
+def main(query):
     # Open a connection to the webcam
     cap = cv2.VideoCapture(0)
 
@@ -56,7 +82,7 @@ def main():
 
         # Process every alternate frame (or you can change the condition as needed)
         if frame_count % 2 == 0:
-            query=""
+            
             # Get description from Gemini model
             description = get_description_from_gemini(frame, query)
 
@@ -87,4 +113,4 @@ def main():
     cap.release()
     cv2.destroyAllWindows()
 
-main()
+

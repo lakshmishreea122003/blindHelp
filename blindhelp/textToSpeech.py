@@ -6,9 +6,6 @@ import time
 def text_to_speech(text, lang='en'):
     tts = gTTS(text=text, lang=lang)
     tts.save("output.mp3")
-    
-    # Optional delay before playing the audio
-    time.sleep(2)
 
     # Initialize pygame mixer
     pygame.mixer.init()
@@ -25,5 +22,5 @@ def text_to_speech(text, lang='en'):
     # Clean up the audio file
     os.remove("output.mp3")
 
-# Example usage
-text_to_speech("Hello, this is a test.")
+
+# text_to_speech('Please say something into the microphone.')
