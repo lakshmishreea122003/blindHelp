@@ -3,7 +3,7 @@ import pyttsx3
 from blindhelp.gemini_vision import main
 from blindhelp.textToSpeech import text_to_speech
 
-def run():
+def getQuery():
     recognizer = sr.Recognizer()
 
     mic_index = 0 
@@ -26,7 +26,9 @@ def run():
                 text = recognizer.recognize_google(audio)
                 text = text.lower()
 
-                main(text)
+                return text
+
+            
 
             except sr.UnknownValueError:
                 print("Could not understand the audio.")

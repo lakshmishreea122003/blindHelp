@@ -1,38 +1,14 @@
-import cv2
-import time
+import cv2, time, os
 import google.generativeai as genai
-import os
-from gtts import gTTS
-import pygame
-
-def text_to_speech(text, lang='en'):
-    tts = gTTS(text=text, lang=lang)
-    tts.save("output.mp3")
-    
-    # Optional delay before playing the audio
-    time.sleep(2)
-
-    # Initialize pygame mixer
-    pygame.mixer.init()
-    pygame.mixer.music.load("output.mp3")
-    pygame.mixer.music.play()
-
-    # Wait until the audio finishes playing
-    while pygame.mixer.music.get_busy():
-        time.sleep(1)  # Sleep for a while to avoid busy-waiting
-
-    # Uninitialize the mixer to release the file
-    pygame.mixer.quit()
-
-    # Clean up the audio file
-    os.remove("output.mp3")
-
+from textToSpeech import text_to_speech
+from speech import getQuery
 
 
 class IAnalysis:
     def __init__(self):
         GOOGLE_API_KEY = os.environ.get('GOOGLE_API_KEY')
         genai.configure(api_key=GOOGLE_API_KEY)
+
     def g_vision(self, image,query):
         temp_path = "temp_image.jpg"
         cv2.imwrite(temp_path, image)
@@ -46,6 +22,7 @@ class IAnalysis:
         response = model.generate_content([sample_file, "Your task is to guide blind person. What can be seen in the image? Describe what ever can be seen in the image in such a way that you are providing information about the surrounding to help in independent mobility of the blind person. "])
         res_guide = self.gemini_guide(response,query) 
         return res_guide
+    
     def gemini_guide(self,description, query):
         model = genai.GenerativeModel('gemini-1.5-flash')
         prompt = f"You are an assistive guide for a blind person. Based on the following description of their surroundings: '{description}', provide clear, concise, and actionable guidance to help the person navigate safely. Also answer to the query {query} of the person(If query is empty string ignore query). Highlight any potential dangers or obstacles, and offer general directions or advice. Use simple and easy-to-understand language. Keep your responses short and mention only important aspects that has to be considered in real time by person. This response text will be converted to speech for each video frame so keep responses short, that should help in independent mobility of the blind person."
@@ -83,6 +60,7 @@ def main(query):
         # Process every alternate frame (or you can change the condition as needed)
         if frame_count % 2 == 0:
             
+            query = getQuery()
             # Get description from Gemini model
             description = get_description_from_gemini(frame, query)
 
