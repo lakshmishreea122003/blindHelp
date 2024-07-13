@@ -34,7 +34,7 @@ class IAnalysis:
         file = genai.get_file(name=sample_file.name)
         print(f"Retrieved file '{file.display_name}' as: {sample_file.uri}")
         model = genai.GenerativeModel(model_name="gemini-1.5-pro-latest")
-        response = model.generate_content([sample_file, "I have provided you a brief map of a room.What can be seen in the image? Describe the image. Give me a guide as to how I can reach the door if the person is standing between source and table."])
+        response = model.generate_content([sample_file, "I have provided you a brief map of a room.What can be seen in the image? Describe the image. Give me a guide as to how person can reach the door if the he is at table2."])
         return response.text
 
      
