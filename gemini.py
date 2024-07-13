@@ -35,6 +35,7 @@ chat_session = model.start_chat(
   history=[
   ]
 )
+
 def Provider(Model_input):
     print('Generating response:\n')
     response = chat_session.send_message(Model_input)

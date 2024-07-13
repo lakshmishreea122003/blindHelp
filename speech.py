@@ -4,9 +4,7 @@ from gemini import Provider
 
 recognizer = sr.Recognizer()
 
-
 mic_index = 0 
-
 
 recognizer = sr.Recognizer()
 
