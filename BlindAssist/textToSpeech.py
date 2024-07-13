@@ -1,7 +1,6 @@
 from gtts import gTTS
-import pygame
-import os
-import time
+import pygame, os, time
+
 
 def text_to_speech(text, lang='en'):
     tts = gTTS(text=text, lang=lang)

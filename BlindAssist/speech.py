@@ -1,6 +1,6 @@
 import speech_recognition as sr
 import pyttsx3
-from textToSpeech import text_to_speech
+from .textToSpeech import text_to_speech
 
 def getQuery():
     recognizer = sr.Recognizer()
