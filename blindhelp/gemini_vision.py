@@ -7,7 +7,7 @@ class IAnalysis:
     def __init__(self):
         GOOGLE_API_KEY = os.environ.get('GOOGLE_API_KEY')
         genai.configure(api_key=GOOGLE_API_KEY)
-    def g_vision(self, image, query):
+    def g_vision(self, image,query):
         temp_path = "temp_image.jpg"
         cv2.imwrite(temp_path, image)
         # Upload the temporary file
@@ -22,21 +22,21 @@ class IAnalysis:
         return res_guide
     def gemini_guide(self,description,query):
         model = genai.GenerativeModel('gemini-1.5-flash')
-        prompt = f"You are an assistive guide for a blind person. Based on the following description of their surroundings: '{description}', provide clear, concise, and actionable guidance to help the person navigate safely. Also answer to the query {query} of the person. Highlight any potential dangers or obstacles, and offer general directions or advice. Use simple and easy-to-understand language."
+        prompt = f"You are an assistive guide for a blind person. Based on the following description of their surroundings: '{description}', provide clear, concise, and actionable guidance to help the person navigate safely. Also answer to the query {query} of the person(If query is empty string ignore query). Highlight any potential dangers or obstacles, and offer general directions or advice. Use simple and easy-to-understand language. Keep your responses short and mention only important aspects that has to be considered in real time by person. This response text will be converted to speech for each video frame so keep responses short, that should help in independent mobility of the blind person."
         res = model.generate_content(prompt).text
         return res
     # def g_query(self,query):
     
     
-def get_description_from_gemini(image, query):
+def get_description_from_gemini(image,query):
     # Get description from Gemini model
     analyzer = IAnalysis()
-    description = analyzer.g_vision(image, query)
+    description = analyzer.g_vision(image,query)
     return description
 
-def main(query):
+def main():
     # Open a connection to the webcam
-    cap = cv2.VideoCapture(1)
+    cap = cv2.VideoCapture(0)
 
     if not cap.isOpened():
         print("Error: Could not open video stream.")
@@ -56,9 +56,9 @@ def main(query):
 
         # Process every alternate frame (or you can change the condition as needed)
         if frame_count % 2 == 0:
+            query=""
             # Get description from Gemini model
             description = get_description_from_gemini(frame, query)
-            
 
             # Print the description to the terminal
             print(f"Frame {frame_count}: {description}")
@@ -87,4 +87,4 @@ def main(query):
     cap.release()
     cv2.destroyAllWindows()
 
-
+main()
