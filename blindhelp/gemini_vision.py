@@ -20,7 +20,7 @@ class IAnalysis:
         response = model.generate_content([sample_file, "Your task is to guide blind person. What can be seen in the image? Describe what ever can be seen in the image in such a way that you are providing information about the surrounding to help in independent mobility of the blind person. "])
         res_guide = self.gemini_guide(response,query) 
         return res_guide
-    def gemini_guide(self,description,query):
+    def gemini_guide(self,description, query):
         model = genai.GenerativeModel('gemini-1.5-flash')
         prompt = f"You are an assistive guide for a blind person. Based on the following description of their surroundings: '{description}', provide clear, concise, and actionable guidance to help the person navigate safely. Also answer to the query {query} of the person(If query is empty string ignore query). Highlight any potential dangers or obstacles, and offer general directions or advice. Use simple and easy-to-understand language. Keep your responses short and mention only important aspects that has to be considered in real time by person. This response text will be converted to speech for each video frame so keep responses short, that should help in independent mobility of the blind person."
         res = model.generate_content(prompt).text
