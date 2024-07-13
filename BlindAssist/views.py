@@ -10,6 +10,7 @@ from django.contrib.auth import authenticate
 from rest_framework.authtoken.models import Token 
 from .serializers import CustomRegisterSerializer
 from .main import start
+from .map_guide import map_main
 # Create your views here.
 
 
@@ -54,5 +55,12 @@ class ProvidingDescription(APIView):
     permission_classes = [AllowAny]
     def get(self, request):
         start()
+        
+@method_decorator(csrf_exempt, name='dispatch')
+class map_ProvidingDescription(APIView):
+    permission_classes = [AllowAny]
+    def get(self, request):
+        map_main()
+
         
 

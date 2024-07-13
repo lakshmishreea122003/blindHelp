@@ -2,6 +2,7 @@ import cv2
 import time
 import google.generativeai as genai
 import os
+from .textToSpeech import text_to_speech
 
 class IAnalysis:
     def __init__(self):
@@ -42,12 +43,13 @@ class IAnalysis:
 def get_directions_map(image):
     # Get description from Gemini model
     analyzer = IAnalysis()
-    map_path = analyzer.g_map(r"C:\Users\Lakshmi\Downloads\homemap.jpg")
+    map_path = analyzer.g_map(r"D:\DjangoProjects\BlindHelp\BlindAssist\map_image.jpg")
     description = analyzer.g_vision(image,map_path)
     return description
 
-def main():
+def map_main():
     # Open a connection to the webcam
+    text_to_speech('Running the map application')
     cap = cv2.VideoCapture(0)
 
     if not cap.isOpened():
@@ -72,6 +74,7 @@ def main():
 
             # Print the description to the terminal
             print(f"Frame {frame_count}: {description}")
+            text_to_speech(description)
 
             # Put the description text on the frame
             font = cv2.FONT_HERSHEY_SIMPLEX
@@ -97,4 +100,3 @@ def main():
     cap.release()
     cv2.destroyAllWindows()
 
-main()
