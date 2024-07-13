@@ -2,7 +2,7 @@ import cv2
 import time
 import google.generativeai as genai
 import os
-
+from textToSpeech import text_to_speech
 class IAnalysis:
     def __init__(self):
         GOOGLE_API_KEY = os.environ.get('GOOGLE_API_KEY')
@@ -40,6 +40,7 @@ def main(query):
 
     if not cap.isOpened():
         print("Error: Could not open video stream.")
+        text_to_speech('Error: Could not open video stream.')
         return
 
     frame_count = 0
@@ -57,6 +58,7 @@ def main(query):
         if frame_count % 2 == 0:
             # Get description from Gemini model
             description = get_description_from_gemini(frame, query)
+            
 
             # Print the description to the terminal
             print(f"Frame {frame_count}: {description}")
