@@ -1,7 +1,7 @@
 import cv2, time, os
 import google.generativeai as genai
-from speech import getQuery
-from textToSpeech import text_to_speech
+from .speech import getQuery
+from .textToSpeech import text_to_speech
 
 class IAnalysis:
     def __init__(self):
@@ -22,9 +22,9 @@ class IAnalysis:
         res_guide = self.gemini_guide(response,query) 
         return res_guide
     
-    def gemini_guide(self,description, query):
+    def gemini_guide(self,description,query):
         model = genai.GenerativeModel('gemini-1.5-flash')
-        prompt = f"You are an assistive guide for a blind person. Based on the following description of their surroundings: '{description}', provide clear, concise, and actionable guidance to help the person navigate safely. Also answer to the query {query} of the person(If query is empty string ignore query). Highlight any potential dangers or obstacles, and offer general directions or advice. Use simple and easy-to-understand language. Keep your responses short and mention only important aspects that has to be considered in real time by person. This response text will be converted to speech for each video frame so keep responses short, that should help in independent mobility of the blind person."
+        prompt = f"You are an assistive guide for a blind person. Based on the following description of their surroundings: '{description}', provide clear, concise, and actionable guidance to help the person navigate safely. Also answer to the query {query} of the person. Highlight any potential dangers or obstacles, and offer general directions or advice. Use simple and easy-to-understand language."
         res = model.generate_content(prompt).text
         return res
     # def g_query(self,query):
