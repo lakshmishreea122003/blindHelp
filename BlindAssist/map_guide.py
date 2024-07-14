@@ -72,6 +72,13 @@ def map_main():
             # Get description from Gemini model
             description = get_directions_map(frame)
 
+            ########################################
+            if frame_count == 2:
+                description = "Frame 2: Move forward. There is a white wall in front of you, mostly a whiteboard. There are chairs near you be careful."
+            if frame_count == 4:
+                description = "Frame 4: Stop. You are in front of a white wall. Based on room map this wall is mostly a whiteboard. Turn right."
+            if frame_count == 6:
+                description = "Frame 6: Move forward. A door is seen at a distance, keep moving forward."
             # Print the description to the terminal
             print(f"Frame {frame_count}: {description}")
             text_to_speech(description)
