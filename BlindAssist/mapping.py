@@ -9,7 +9,7 @@ class IAnalysis:
     def __init__(self):
         GOOGLE_API_KEY = os.environ.get('GOOGLE_API_KEY')
         genai.configure(api_key=GOOGLE_API_KEY)
-    def g_vision(self, image,query):
+    def g_vision(self, image,map_description,query):
         temp_path = "temp_image.jpg"
         cv2.imwrite(temp_path, image)
         # Upload the temporary file
@@ -20,14 +20,14 @@ class IAnalysis:
         # Analyze the image using the Gemini model
         model = genai.GenerativeModel(model_name="gemini-1.5-pro-latest")
         response = model.generate_content([sample_file, "Your task is to guide blind person. What can be seen in the image? Describe what ever can be seen in the image in such a way that you are providing information about the surroundings to help in independent mobility of the blind person. "])
-        res_guide = self.gemini_guide_map(response,query) 
+        res_guide = self.gemini_guide_map(response,map_description,query) 
         return res_guide
     
-    def gemini_guide_map(self,description,map_path):
+    def gemini_guide_map(self,description,map_description, query):
         model = genai.GenerativeModel('gemini-1.5-flash')
-        prompt = f"You are an assistive guide for a blind person. Based on the following description of their surroundings: '{description}', provide clear, concise, and actionable guidance to help the person navigate safely. Also, consider the room {map_path} here it tells about the room description and from where to where the person the person is willing to move. Based on the surrounding description check which instruction should be provided to the person, like move direction or stop if any obstacle. Keep the responses confined to just move mention_direction(straight, right, left, back etc) or stop if obstacle. Give only one instruction at a time based on the surrounding description plus one sentence as to why you gave that command. Help the person reach his destination. In the responses it should be plain text with no markdown format. Keep the response short. Do not include special charaters like *,@,# or any such charactes it should be a plain text only. "
+        prompt = f"You are an assistive guide for a blind person. Here is the rough description of the room where the blind person is: {map_description}  Based on the following description of their surroundings: '{description}', provide clear, concise, and actionable guidance to help the person navigate safely. Also answer to the query {query} of the person(If query is empty string ignore query). Highlight any potential dangers or obstacles, and offer general directions or advice. Use simple and easy-to-understand language. Keep your responses short and mention only important aspects that has to be considered in real time by person. This response text will be converted to speech for each video frame so keep responses short, that should help in independent mobility of the blind person. In the responses it should be plain text with no markdown format. Keep the response short. Do not include special charaters like *,@,# or any such charactes it should be a plain text only. "
         res = model.generate_content(prompt).text
-        res = model.generate_content(prompt).text
+        
         return res
 
     def g_map(self,file_path):
@@ -42,17 +42,17 @@ class IAnalysis:
      
     
     
-def get_directions_map(image):
+def get_directions_map(image,query):
     # Get description from Gemini model
     analyzer = IAnalysis()
-    map_path = analyzer.g_map(r"D:\DjangoProjects\BlindHelp\BlindAssist\map_image.jpg")
-    description = analyzer.g_vision(image,map_path)
+    map_description = 'The room is rectangular with a door located in the top right corner. As you enter from the door, you will find a whiteboard on the wall to your immediate right. Two tables are positioned horizontally in the room. Table 1 is closer to the whiteboard and the left side of the room, while Table 2 is slightly to the right of Table 1, closer to the center. Chairs are aligned along both sides of these tables, providing seating. The room features four windows: Window 1 is on the top left side near the whiteboard, Window 2 is on the left side near the middle, Window 3 is on the bottom left side, and Window 4 is on the right side near the middle.'
+    description = analyzer.g_vision(image,map_description,query)
     return description
 
 def map_main():
     # Open a connection to the webcam
     text_to_speech('Running the map application')
-    cap = cv2.VideoCapture(0)
+    cap = cv2.VideoCapture(1)
 
     if not cap.isOpened():
         print("Error: Could not open video stream.")
@@ -74,15 +74,9 @@ def map_main():
         if frame_count % 2 == 0:
             # Get description from Gemini model
             query = getQuery()
-            description = get_directions_map(frame)
+            description = get_directions_map(frame,query)
+            
 
-            ########################################
-            if frame_count == 2:
-                description = "Frame 2: Move forward. There is a white wall in front of you, mostly a whiteboard. There are chairs near you be careful."
-            if frame_count == 4:
-                description = "Frame 4: Stop. You are in front of a white wall. Based on room map this wall is mostly a whiteboard. Turn right."
-            if frame_count == 6:
-                description = "Frame 6: Move forward. A door is seen at a distance, keep moving forward."
             # Print the description to the terminal
             print(f"Frame {frame_count}: {description}")
             text_to_speech(description)

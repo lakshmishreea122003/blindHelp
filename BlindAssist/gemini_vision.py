@@ -37,7 +37,7 @@ def get_description_from_gemini(image,query):
 
 def main():
     # Open a connection to the webcam
-    cap = cv2.VideoCapture(0)
+    cap = cv2.VideoCapture(1)
 
     if not cap.isOpened():
         print("Error: Could not open video stream.")
@@ -58,8 +58,8 @@ def main():
         # Process every alternate frame (or you can change the condition as needed)
         if frame_count % 2 == 0:
             # query taken only for first frame
-            if frame_count == 2:
-                query = getQuery()
+           
+            query = getQuery()
             # Get description from Gemini model
             description = get_description_from_gemini(frame, query)
 

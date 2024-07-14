@@ -10,7 +10,7 @@ from django.contrib.auth import authenticate
 from rest_framework.authtoken.models import Token 
 from .serializers import CustomRegisterSerializer
 from .main import start
-from .map_guide import map_main
+from .mapping import map_main
 # Create your views here.
 
 
