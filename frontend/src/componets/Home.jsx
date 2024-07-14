@@ -25,6 +25,9 @@ const Home = () => {
 
   return (
     <div className="min-h-screen flex flex-col justify-center lg:px-32 px-5 text-white opacity-90 image">
+      <div className="AppName">
+        <h1>Blind Assist</h1>
+      </div>
       <div className="lg:w-4/5 space-y-5 mt-10">
         <h1 className="text-5xl font-bold leading-tight">
             Empowering Health Choices for a Vibrant Life Your Trusted..
