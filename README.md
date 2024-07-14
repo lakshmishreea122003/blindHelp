@@ -1,4 +1,8 @@
 # blindHelp
+## Empowering the Blind: Navigate Your World with Confidence
+
+### What it does?
+
 To start the project:
  Make you of camo app
  or give the videostream index as 0 in videoCapture of opencv
