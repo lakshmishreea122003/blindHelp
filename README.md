@@ -1,5 +1,5 @@
 # blindHelp
-## Empowering the Blind: Navigate Your World with Confidence
+Empowering the Blind: Navigate Your World with Confidence
 
 ### What it does?
 This project is designed to assist visually impaired individuals by providing real-time audio descriptions of their surroundings and guiding them to specific indoor destinations.
@@ -23,6 +23,9 @@ The two features of this project are:
 - Google Speech-to-Text (STT): To convert spoken queries from users into text for processing.
 - Django and React: For building the web application interface.
 - Gemini Flash: For generating text responses.
+
+### Achievements
+This project won 3rd place for the Healthcare domain in the TechTonic2024 hackathon organized by Dayananda Sagar Academy of Technology and Management.
   
 ### Quick start
 To start the project:
