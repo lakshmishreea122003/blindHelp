@@ -25,7 +25,7 @@ class IAnalysis:
     def gemini_guide_map(self,description,map_path):
         model = genai.GenerativeModel('gemini-1.5-flash')
         prompt = f"You are an assistive guide for a blind person. Based on the following description of their surroundings: '{description}', provide clear, concise, and actionable guidance to help the person navigate safely. Also, consider the room {map_path} here it tells about the room description and from where to where the person the person is willing to move. Based on the surrounding description check which instruction should be provided to the person, like move direction or stop if any obstacle. Keep the responses confined to just move mention_direction(straight, right, left, back etc) or stop if obstacle. Give only one instruction at a time based on the surrounding description plus one sentence as to why you gave that command. Help the person reach his destination. In the responses it should be plain text with no markdown format. Keep the response short. Do not include special charaters like *,@,# or any such charactes it should be a plain text only. "
-        res = model.generate_content(prompt).text"
+        res = model.generate_content(prompt).text
         res = model.generate_content(prompt).text
         return res
 
