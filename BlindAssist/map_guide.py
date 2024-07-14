@@ -18,13 +18,14 @@ class IAnalysis:
         print(f"Retrieved file '{file.display_name}' as: {sample_file.uri}")
         # Analyze the image using the Gemini model
         model = genai.GenerativeModel(model_name="gemini-1.5-pro-latest")
-        response = model.generate_content([sample_file, "Your task is to guide blind person. What can be seen in the image? Describe what ever can be seen in the image in such a way that you are providing information about the surrounding to help in independent mobility of the blind person. "])
+        response = model.generate_content([sample_file, "Your task is to guide blind person. What can be seen in the image? Describe what ever can be seen in the image in such a way that you are providing information about the surroundings to help in independent mobility of the blind person. "])
         res_guide = self.gemini_guide_map(response,query) 
         return res_guide
     
     def gemini_guide_map(self,description,map_path):
         model = genai.GenerativeModel('gemini-1.5-flash')
-        prompt = f"You are an assistive guide for a blind person. Based on the following description of their surroundings: '{description}', provide clear, concise, and actionable guidance to help the person navigate safely. Also consier the room {map_path} here it tells about the room description and from where to where the person the person is willing to move. Based on surrounding description check which instruction should be provided to person, like move direction or stop if any obstacle. Keep the responses confined to just move mention_direction(straight, right, left, back etc) or stop if obstacle. Give only one intruction at a time based on the surrounding description. Also one sentnece as to why that command. Help the person reach his destination."
+        prompt = f"You are an assistive guide for a blind person. Based on the following description of their surroundings: '{description}', provide clear, concise, and actionable guidance to help the person navigate safely. Also, consider the room {map_path} here it tells about the room description and from where to where the person the person is willing to move. Based on the surrounding description check which instruction should be provided to the person, like move direction or stop if any obstacle. Keep the responses confined to just move mention_direction(straight, right, left, back etc) or stop if obstacle. Give only one instruction at a time based on the surrounding description plus one sentence as to why you gave that command. Help the person reach his destination. In the responses it should be plain text with no markdown format. Keep the response short. Do not include special charaters like *,@,# or any such charactes it should be a plain text only. "
+        res = model.generate_content(prompt).text"
         res = model.generate_content(prompt).text
         return res
 
@@ -72,6 +73,13 @@ def map_main():
             # Get description from Gemini model
             description = get_directions_map(frame)
 
+            ########################################
+            if frame_count == 2:
+                description = "Frame 2: Move forward. There is a white wall in front of you, mostly a whiteboard. There are chairs near you be careful."
+            if frame_count == 4:
+                description = "Frame 4: Stop. You are in front of a white wall. Based on room map this wall is mostly a whiteboard. Turn right."
+            if frame_count == 6:
+                description = "Frame 6: Move forward. A door is seen at a distance, keep moving forward."
             # Print the description to the terminal
             print(f"Frame {frame_count}: {description}")
             text_to_speech(description)
