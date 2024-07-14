@@ -3,6 +3,7 @@ import time
 import google.generativeai as genai
 import os
 from .textToSpeech import text_to_speech
+from .speech import getQuery
 
 class IAnalysis:
     def __init__(self):
@@ -67,10 +68,12 @@ def map_main():
             break
 
         frame_count += 1
+        query = ""
 
         # Process every alternate frame (or you can change the condition as needed)
         if frame_count % 2 == 0:
             # Get description from Gemini model
+            query = getQuery()
             description = get_directions_map(frame)
 
             ########################################

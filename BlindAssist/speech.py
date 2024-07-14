@@ -27,7 +27,6 @@ def getQuery():
 
                 return text
 
-            
 
             except sr.UnknownValueError:
                 print("Could not understand the audio.")
